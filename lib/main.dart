@@ -1,3 +1,4 @@
+import 'package:assignments/screens/contacts_screen.dart';
 import 'package:assignments/screens/facebook_login_screen.dart';
 import 'package:assignments/screens/whatsapp_chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:
-          //FacebookLoginScreen(),
-          WhatsAppChatScreen(),
+      home: ContactsScreen(),
+      //FacebookLoginScreen(),
+      //WhatsAppChatScreen(),
     );
   }
 }
