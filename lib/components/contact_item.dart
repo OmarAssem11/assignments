@@ -1,18 +1,24 @@
+import 'package:assignments/screens/contacts_screen.dart';
 import 'package:flutter/material.dart';
 
-class ContactItem extends StatelessWidget {
-  const ContactItem({
+class ContactItem extends StatefulWidget {
+  ContactItem({
     required this.isVisible,
     required this.nameController,
     required this.phoneController,
   });
-  final bool isVisible;
+  bool isVisible;
   final TextEditingController nameController;
   final TextEditingController phoneController;
   @override
+  State<ContactItem> createState() => _ContactItemState();
+}
+
+class _ContactItemState extends State<ContactItem> {
+  @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: isVisible,
+      visible: widget.isVisible,
       child: Container(
         height: 100,
         width: double.infinity,
@@ -28,20 +34,53 @@ class ContactItem extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(40)),
           border: Border.all(color: Colors.white),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Name: ${nameController.text}',
-              style: const TextStyle(
-                fontSize: 22,
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Name: ${widget.nameController.text}',
+                  style: const TextStyle(
+                    fontSize: 22,
+                  ),
+                ),
+                Text(
+                  'Phone: ${widget.phoneController.text}',
+                  style: const TextStyle(
+                    fontSize: 22,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              'Phone: ${phoneController.text}',
-              style: const TextStyle(
-                fontSize: 22,
+            ElevatedButton(
+              style: ButtonStyle(
+                fixedSize: MaterialStateProperty.all(
+                  const Size(double.infinity, 50),
+                ),
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all(
+                  const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(64)),
+                  ),
+                ),
+                elevation: MaterialStateProperty.all(0),
+              ),
+              onPressed: () {
+                setState(() {
+                  widget.isVisible = false;
+                  index--;
+                });
+              },
+              child: const Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

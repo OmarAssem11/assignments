@@ -7,28 +7,33 @@ class ContactsScreen extends StatefulWidget {
   State<ContactsScreen> createState() => _ContactsScreenState();
 }
 
+int index = 0;
+
 class _ContactsScreenState extends State<ContactsScreen> {
   final decoration = BoxDecoration(
     color: Colors.white,
     borderRadius: const BorderRadius.all(Radius.circular(32)),
     border: Border.all(),
   );
-  final nameControllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
-  final phoneControllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
-  List<bool> isVisible = [
-    false,
-    false,
-    false,
-  ];
-  int index = 0;
+  final nameControllers = List.generate(3, (_) => TextEditingController());
+  final phoneControllers = List.generate(3, (_) => TextEditingController());
+  ContactItem contactItem1 = ContactItem(
+    isVisible: false,
+    nameController: TextEditingController(),
+    phoneController: TextEditingController(),
+  );
+  ContactItem contactItem2 = ContactItem(
+    isVisible: false,
+    nameController: TextEditingController(),
+    phoneController: TextEditingController(),
+  );
+  ContactItem contactItem3 = ContactItem(
+    isVisible: false,
+    nameController: TextEditingController(),
+    phoneController: TextEditingController(),
+  );
+
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,159 +43,161 @@ class _ContactsScreenState extends State<ContactsScreen> {
         centerTitle: true,
       ),
       backgroundColor: Colors.grey,
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(
-              vertical: 16,
-              horizontal: 8,
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 11,
-            ),
-            decoration: decoration,
-            child: TextField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Enter Your Name Here',
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                suffixIcon: Icon(
-                  Icons.edit,
-                  color: Colors.blue,
-                ),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 8,
               ),
-              keyboardType: TextInputType.name,
-              controller: index < nameControllers.length
-                  ? nameControllers[index]
-                  : null,
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(
-              right: 8,
-              left: 8,
-              bottom: 16,
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 11,
-            ),
-            decoration: decoration,
-            child: TextField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Enter Your Phone Number',
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                suffixIcon: Icon(
-                  Icons.phone,
-                  color: Colors.blue,
-                ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 11,
               ),
-              keyboardType: TextInputType.phone,
-              controller: index < phoneControllers.length
-                  ? phoneControllers[index]
-                  : null,
+              decoration: decoration,
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Enter Your Name Here',
+                  hintStyle: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                  ),
+                ),
+                keyboardType: TextInputType.name,
+                controller: index < 3
+                    ? nameControllers[index]
+                    : TextEditingController(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Name can't be empty";
+                  }
+                  return null;
+                },
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 8,
-              left: 8,
-              top: 8,
-              bottom: 20,
+            Container(
+              margin: const EdgeInsets.only(
+                right: 8,
+                left: 8,
+                bottom: 16,
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 11,
+              ),
+              decoration: decoration,
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Enter Your Phone Number',
+                  hintStyle: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.phone,
+                    color: Colors.blue,
+                  ),
+                ),
+                keyboardType: TextInputType.phone,
+                controller: index < 3
+                    ? phoneControllers[index]
+                    : TextEditingController(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Phone number can't be empty";
+                  }
+                  return null;
+                },
+              ),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(
-                        const Size(double.infinity, 50),
-                      ),
-                      shape: MaterialStateProperty.all(
-                        const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(64)),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 8,
+                left: 8,
+                top: 8,
+                bottom: 20,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(
+                          const Size(double.infinity, 50),
                         ),
+                        shape: MaterialStateProperty.all(
+                          const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(64)),
+                          ),
+                        ),
+                        elevation: MaterialStateProperty.all(0),
                       ),
-                      elevation: MaterialStateProperty.all(0),
-                    ),
-                    onPressed: () => setState(() {
-                      isVisible[index] = true;
-                      index++;
-                    }),
-                    child: const Text(
-                      'Add',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                      onPressed: addContact,
+                      child: const Text(
+                        'Add',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(
-                        const Size(double.infinity, 50),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
-                      shape: MaterialStateProperty.all(
-                        const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(64)),
-                        ),
-                      ),
-                      elevation: MaterialStateProperty.all(0),
-                    ),
-                    onPressed: () => setState(() {
-                      if (index >= 0) {
-                        if (index > 0) {
-                          index--;
-                        }
-                        isVisible[index] = false;
-                        nameControllers[index].clear();
-                        phoneControllers[index].clear();
-                      }
-                    }),
-                    child: const Text(
-                      'Delete',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          ContactItem(
-            isVisible: isVisible[0],
-            nameController: nameControllers[0],
-            phoneController: phoneControllers[0],
-          ),
-          ContactItem(
-            isVisible: isVisible[1],
-            nameController: nameControllers[1],
-            phoneController: phoneControllers[1],
-          ),
-          ContactItem(
-            isVisible: isVisible[2],
-            nameController: nameControllers[2],
-            phoneController: phoneControllers[2],
-          ),
-        ],
+            contactItem1,
+            contactItem2,
+            contactItem3,
+          ],
+        ),
       ),
     );
+  }
+
+  void addContact() {
+    if (_formKey.currentState!.validate()) {
+      switch (index) {
+        case 0:
+          contactItem1 = ContactItem(
+            isVisible: true,
+            nameController: nameControllers[0],
+            phoneController: phoneControllers[0],
+          );
+          index++;
+          break;
+        case 1:
+          contactItem2 = ContactItem(
+            isVisible: true,
+            nameController: nameControllers[1],
+            phoneController: phoneControllers[1],
+          );
+          index++;
+          break;
+        case 2:
+          contactItem3 = ContactItem(
+            isVisible: true,
+            nameController: nameControllers[2],
+            phoneController: phoneControllers[2],
+          );
+          index++;
+          break;
+      }
+      if (index < 3) {
+        nameControllers[index].clear();
+        phoneControllers[index].clear();
+      }
+      setState(() {});
+    }
   }
 }
